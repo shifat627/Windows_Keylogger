@@ -1,0 +1,12 @@
+EXPORTS
+    Keylogger @1
+    Last_key @2 DATA
+    MAIN @3
+    Proc @4 DATA
+    buffer @5 DATA
+    kb @6 DATA
+    l @7 DATA
+    length @8 DATA
+    proc @9
+    s @10 DATA
+    status @11 DATA
